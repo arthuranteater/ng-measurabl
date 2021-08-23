@@ -1,0 +1,45 @@
+<h2 id="title">Persons Table</h2>
+
+<ng-template [ngIf]="showTable" [ngIfElse]="showSpinner">
+  <table>
+    <tbody>
+      <tr>
+        <th
+          *ngFor="let col of combined[0] | keyvalue: keepOriginalOrder"
+          (click)="sortArr(col.key)"
+          id="{col.key}"
+          key="{col.key}"
+        >
+          {{ col.key }}
+          <ng-template [ngIf]="activeColumn === col.key">
+            <ng-template [ngIf]="isAscending" [ngIfElse]="elseBlock">
+              <fa-icon [icon]="faSortDown"></fa-icon>
+            </ng-template>
+            <ng-template #elseBlock>
+              <fa-icon [icon]="faSortUp"></fa-icon>
+            </ng-template>
+          </ng-template>
+        </th>
+      </tr>
+      <tr *ngFor="let s of combined; index as i" key="{item.id}">
+        <td
+          *ngFor="let col of s | keyvalue: keepOriginalOrder"
+          key="{col.value}"
+        >
+          {{ col.value }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+<ng-template #showSpinner>
+  <ng-template [ngIf]="!error" [ngIfElse]="errorBlock">
+    <ngx-spinner   bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"></ngx-spinner>
+  </ng-template>
+  <ng-template #errorBlock>
+    <h4>{{ error }}</h4>
+  </ng-template>
+</ng-template>
